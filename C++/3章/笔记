@@ -1,0 +1,67 @@
+short 至少16位
+int 至少与short一样长
+long 至少32位，且至少与int一样长
+long long 至少64位，且至少与long一样长
+
+climits中包含了关于整型限制的信息。具体地说，它定义了表示各种限制的符号名称，例如，INT_MAX 为 int 的最大取值， CHAR_BIT为字节的位数。
+
+C++也可以这样定义一个变量：         int wrens(432); //alternative C++ suntax set wrens to 432
+
+C++11初始化方式可将大括号初始化器用于单值变量，使用这种方式可以使用等号，也可以不使用，如下：
+int emus{7};            //set emus to 5
+int rheas = {12};       //set rheas to 12
+
+其次大括号内可以不包含任何东西，在这种情况下，变量将被初始化为零
+int rocs = {};  //set rocs to 0
+int psychics{}; //set psychics to 0
+
+如果知道变量可能表述的整数值大于16位整数的最大可能值，则使用long，即使系统上int为32位也应该这样做，这样程序移植到16位操作系统的时候，就不会突然无法正常工作，如果要存储的值超过20亿，可使用long long
+
+如果第一位为1~9，就是基数为10，如果第一位为0，第二位为1~7，则基数为8.如果前两位为0x或0X，则基数为16
+
+C++对常量的类型的确定
+比方说 cout << "Year = " << 1492 << endl;
+除非有理由存储为其他类型(如使用了特殊的后缀来表示特定的类型，或者值太大，不能存储为int),否则C++将整型常量存储为int类型
+首先会观察后缀，后缀是放在数字常量后面的字母，用于表示类型。整数后面的l或L后缀表示该整数为long常量(出于好辨认的原因，选择L做后缀),u和U后缀表示unsigned int常量,ul(顺序无所谓)表示unsigned long 常量。C++11中提供了ll和LL(long long 类型)和ull，uLL，Ull，ULL(unsigned long long)
+其次考察长度，对于不带后缀的十进制整数，将使用下面几种类型中能够存储该数的最小类型来表示:int, long或long long。对于不带后缀的十六进制和八进制整数，将使用下面几种类型中能够存储该数的最小类型来表示：int, unsigned long , long long 和 unsigned long long ，原因是十六进制常用来表示内存地址，而内存地址是没有符号的。因此，unsigned int 比 long更适合用来表示16位的地址
+
+cout.put()函数可显示一个字符(类似于C中的putchar),cout.put()是一个重要的C++OOP概念——成员函数的例子.
+类定义了如何表示和控制数据。成员函数归类所有，描述了操纵类数据的方法。如类ostream有一个put()成员函数，用来输出字符。只能通过类的特定对象(例如这里的cout对象)来使用成员函数,要通过对象(如cout)使用成员函数，必须用句点将对象名和函数名称(put())连接起来。句点被称为成员运算符。cout.put()的意思是，通过类对象cout来使用函数put()
+
+垂直制表符: \v
+
+与int不同的是，char在默认情况下既不是没有符号，也不是有福好，是否有符号将由C++实现决定。当然自己也可以显式的设置signed与unsigned
+
+wcha_t，在程序需要处理的字符集无法用一个8位的字节表示的时候，类型wchar_t(宽字符类型)可以表示扩展字符集。wchar_t是一种整数类型，有足够的空间表示系统使用的最大扩展字符集。这种类型与另一种整型(底层(underlying)类型)的长度和符号属性相同。对底层类型的选择取决于实现，因此在一个系统中，他可能是unsigned short,而在另一个系统中，可能是int
+
+cin和cout将输入和输出看做是char流，因此不适于用来处理wchar_t类型，wcin和wcout可用于处理wchar_t流，另外可以通过加上前缀L来指示宽字符常量和宽字符串。
+
+C++11新增了类型char16_t和char32_t，有特定的长度和符号特征的类型，有很大帮助。前者无符号，长16位，后者也是无符号，32位。C++11中用前缀u表示char16_t字符常量和字符串常量，并使用前缀U表示char32_t常量。
+
+C++有一种更好的处理符号常量的方法，这种方法就是使用const关键字来修改变量声明和初始化。一旦常量被初始化以后，其值被固定，编译器将不允许再修改该常量值。关键字const叫做限定符,因为他限定了声明的含义，类似于#define
+创建常量的通用格式如下: const type name = value;
+如果在声明常量的时候没有赋值，则该常量的值将不确定,且无法修改.const比#define好在首先它可以指定类型,其次可以使用C++的作用域规则将定义限制在特定的函数或文件中，第三，可以将const用于更复杂的类型
+
+浮点数d.dddE+n表示小数点向右移动n位，而d.dddE~n则表示小数点向左移动n位。之所以称为浮点，就是因为小数点可以移动
+//the following are the minimum number of significant digits
+#define DBL_DIG 15  //double
+#define FLT_DIG 6   //float
+#define LDBL_DIG 18 //long double
+
+如果有11.17+50.25得到61.419998这不是运算问题，而是在float的6位有效精度下得到的正确值，如果需要更高的精度，要使用double和long double
+
+C++的自动类型转换
+将一种算数类型的值赋给另一种算数类型的变量时，C++将对值进行转换
+表达式中包含不同的类型的同时，C++将对值进行转换
+将参数传递给函数时，C++将对值进行转换
+
+例如so_long的类型为long， thirty类型为short，有so_long = thirty
+则进行赋值的时候，程序将thirty的值扩展为long的位数得到一个新值，这个值被存在so_long中，而thirty内容不变。
+当时如果一个double类型赋值给float就会出现问题。
+
+
+观察下列语句
+short chickens = 20;
+short ducks = 35;
+short fowl = chickens + ducks;
+为执行第三条语句,C++程序取得chickens和ducks的值，并将其转化为int。最后经过计算，程序将结果转化为shor。原因是int是计算机最自然的类型，计算机使用这个类型的时候运算速度最快

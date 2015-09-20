@@ -1,0 +1,12 @@
+线程创建函数中有一个参数的值为pthread_attr_t，该结构体定义如下：
+typedef struct{
+    int  detachstate;   //表示新创建的线程是否与进程中其他线程脱离同步。detachstate的缺省值为PTHREAD_CREATE_JOINABLE状态，这个属性也可以用函数pthread_detach()来设置。如果将detachstate设置为PTHREAD_CREATE_DETACH状态，则detachstate不能再恢复到PTHREAD_CREATE_JOINABLE状态。
+    int  schedpolicy;   //表示新线程的调度策略，主要包括SCHED_OTHRE(正常，非实时)，SCHED_RR(实时，轮转法)和SCHED_FIFO(实时，先入先出)3种，缺省为SCHED_OTHER，后两种调度策略仅对超级用户有效
+    struct sched_param  schedparam; //一个struct sched_param结构，其中有一个sched_priority整型变量表示线程的运行优先级。这个参数仅当调度策略为实时(即SCHED_RR或SCHED_FIFO）时才有效，缺省为0
+    int  inheritsched;  //有两种值可供选择，PTHREAD_EXPLICIT_SCHED和PTHREAD_INHERIT_SCHED,前者表示新线程显示指定调度策略和调度参数(即attr中的值)，而后者表示继承调用者线程的值。缺省为PTHREAD_EXPLICIT_SCHED
+    int scope;  //表示线程间竞争CPU的范围，也就是说线程优先级的范围。POSIX的标准中定义了两个值，PTHREAD_SCOPE_SYSTEM和PTHREAD_SCOPE_PROCESS，前者表示与系统中所有线程一起竞争CPU，后者表示仅与同进程中的线程竞争CPU
+    size_t  guardsize;  //警戒堆栈的大小
+    int stackaddr_set; //堆栈地址集
+    void * stackaddr;  //堆栈的地址
+    size_t stacksize;  //堆栈的大小
+}pthread_attr_t;

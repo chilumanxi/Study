@@ -1,0 +1,89 @@
+#ifndef __SERVER_H
+#define __SERVER_H
+
+#include"lib.h"
+#include<pthread.h>
+#include<unistd.h>
+#include<sys/socket.h>
+#include<arpa/inet.h>
+#include<netinet/in.h>
+#include<termios.h>
+#define BACKLOG 100
+#define MAXPEOPLE 100
+
+#define PWDLEN 20
+#define SAVEMOST 1024
+#define PATHLEN 128
+#define MAXGROUP 256
+#define MAXFILE 1024
+#define FD_ADDR_CLR(a) ((a)->fd) = -2;\
+		(a)->addr.sin_addr.s_addr = 0;\
+		 memset((a)->user_name, 0, 10);\
+		(a)->room_flag = 0;
+		
+#define DEBUG_VERSION
+
+
+
+
+struct info{
+	char name[NAMELEN];
+	char pwd[PWDLEN];
+    char age[3];
+    char phonenum[PWDLEN];
+    char friends[MAXPEOPLE][NAMELEN];
+    char friendsnum[4];
+    char groups[MAXGROUP][NAMELEN];
+	struct info* next;
+};
+
+struct group{
+    char group_name[NAMELEN];
+    char member[MAXPEOPLE][NAMELEN];
+    char filename[MAXFILE][NAMELEN];
+    struct group *next;
+};
+
+struct log{
+    char logbuf[BUFLEN];
+    int len;
+};
+
+fd_addr client[MAXPEOPLE];
+struct info* file_info;
+struct group* file_group;
+struct log errlog;
+struct log dailtlog;
+
+
+pthread_mutex_t sock_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t client_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t file_mutex = PTHREAD_MUTEX_INITIALIZER;
+
+void server();
+void* msg_processor(void*);
+int login(fd_addr*);
+void chat_with_all(fd_addr*);
+//void chat_with_one(fd_addr*);
+void send_to_all(char* ,fd_addr*);
+void send_to_group(char *, fd_addr*, struct group *);
+void load_info();
+void load_group();
+void save_info(struct info*);
+void save_group(struct group*);
+void add_in_list(struct info *, const char *, const char *, const char *, const char *);
+void add_group_list(struct group *, const char *, const char *);
+void update_info(struct info*);
+void update_group(struct group*);
+void add_friend(fd_addr *);
+void send_invatation(fd_addr*, const char *);
+void chat_with_one(fd_addr *, struct info *);
+void chat_with_group(fd_addr *, struct info *);
+void add_group(fd_addr *, struct info *);
+void quit_from_group(fd_addr *, struct info *);
+void change_information(fd_addr *, struct info* );
+void deal_log(struct log, char *, char *);
+void file_of_the_group(fd_addr*, struct info *);
+void *get_file_from_ser(void *);
+void *send_file_to_ser(void *);
+#endif

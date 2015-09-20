@@ -1,0 +1,19 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+A	coin_problem.c	/^int A;$/;"	v
+MAX_N	区间调度问题.cpp	/^const int MAX_N 100000;$/;"	v
+N	区间调度问题.cpp	/^int N, S[MAX_N], T[MAX_N];$/;"	v
+S	区间调度问题.cpp	/^int N, S[MAX_N], T[MAX_N];$/;"	v
+T	区间调度问题.cpp	/^int N, S[MAX_N], T[MAX_N];$/;"	v
+itv	区间调度问题.cpp	/^pair<int , int> itv[MAX_N];$/;"	v
+main	coin_problem.c	/^int main(void){$/;"	f
+main	区间调度问题.cpp	/^int main(void){$/;"	f
+min	coin_problem.c	/^int min(int a, int b){$/;"	f
+num	coin_problem.c	/^int num[6];$/;"	v
+solve	coin_problem.c	/^void solve(){$/;"	f
+solve	区间调度问题.cpp	/^void solve(){$/;"	f
+v	coin_problem.c	/^const int v[6] ={1, 5, 10, 50, 100, 500};$/;"	v
