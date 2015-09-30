@@ -21,34 +21,63 @@ struct LNode{
     struct LNode *next;
 }*Linklist;
 
-struct LNode *phead1;
+struct LNode *phead1 = NULL;
 
+/*
 void Creat_list(){
     phead1 = (LNode *)malloc(sizeof(LNode));
     phead1 -> next = phead1;
 }
+*/
 
 void Insert_list(int x, int y){
-    LNode *lastn = phead1;
-    LNode *nextn = phead1 -> next;
+    LNode *lastn;
+    LNode *nextn;
 
     LNode *p = (LNode *)malloc(sizeof(LNode));
     p -> num = x;
     p -> passwd = y;
-
-    if(nextn != NULL){
-        for(; nextn != phead1; nextn = nextn -> next, lastn = lastn -> next);
+    
+    if(phead1 == NULL){
+        phead1 = (LNode *)malloc(sizeof(LNode));
+        phead1 -> num = x;
+        phead1 -> passwd = y;
+        phead1 -> next = phead1;
+        nextn = phead1 -> next;
+        lastn = phead1;
     }
-    lastn -> next = p;
-    p -> next = nextn;
+    else{
+        if(nextn != NULL){
+            for(nextn = phead1 -> next, lastn = phead1; nextn != phead1; nextn = nextn -> next, lastn = lastn -> next);
+        }
+        lastn -> next = p;
+        p -> next = nextn;
+    }
 }
 
 void Joseph_work(){
-    LNode *movep = phead1 -> next;
-    LNode *lastn = phead1;
+    LNode *movep = phead1;
+    LNode *lastn;
     int flag = 0;
     int step = first_passwd;
     int temp = num_pe;
+    
+    for(;lastn -> next != phead1; lastn = lastn -> next);
+
+
+    while(temp --){
+        for(int i = 1; i < step; i ++){
+            movep = movep -> next;
+            lastn = lastn -> next;
+        }
+        step = movep -> passwd;
+        printf("The number of %d is out of line, his passwd is %d\n", movep -> num, movep -> passwd);
+        lastn -> next = movep -> next;
+        free(movep);
+        movep = lastn -> next;
+    }
+
+   /*
     while(temp --){
         if(flag == 0){
             flag = 1;
@@ -83,12 +112,14 @@ void Joseph_work(){
                 movep = movep -> next;
         }
     }
+    */
 }
 
 void Print_list(){
     LNode *p = phead1 -> next;
     int i  = 0;
     printf("I will show you all the persons and their passwd:\n");
+    printf("the number of %d person's passwd is %d\n", phead1 -> num, phead1 -> passwd);
     for(; p != phead1; p = p -> next){
         i ++;
         printf("the number of %d person's passwd is %d\n", p -> num, p -> passwd);
@@ -97,7 +128,7 @@ void Print_list(){
 
 int main(void){
     int temp_passwd;
-    Creat_list();
+ //   Creat_list();
     printf("please input the number of persons:\n");
     scanf("%d", &num_pe);
     printf("please input the first passwd:\n");
