@@ -1,0 +1,129 @@
+#includestdio.h＞
+   #define MAX 100
+   typedef struct inode    /*数据类型定义*/
+   {  int row,col;
+       struct lnode*down,*right;
+       union    /*用共用体定义两种结点：非零元素行，列首结点*/
+       { Struct lnode*next;
+           int val;
+       }uval;
+   }mat;
+   mat*createmat(mat*h[])/*建立十字链表算法，h是十字链表各行首指针的数组*/
+   {  int m,n,t,s,i,r,c,v;
+       mat*p,*q;
+       printf("input row(m),col(n),elem(t):");
+       scanf  ("%d,%d,%d"  ,＆m,＆n,＆t);
+       p=(mat*)malloc(sizeof(mat));
+       h[0]=p;
+       P-＞row=m;
+       p-＞col=n;
+       s=m＞n?m:n;
+       for(i=1; i=s;i++)
+       (  p=(mat*)malloc(Sizeof(mat));
+           h[i]=p;
+           h[i-1]-＞uval.next=p;
+           p-＞row=p-＞col=0;
+           p-＞down=p-＞right=p;
+       }
+       h[s]-＞uval.next=h[0];
+       for(i=1; i=t; i++)
+       {printf("\tinput data%d r,c,v):",i};
+           scanf  ("%d,%d,  %d"  ,  ＆r,＆c  ,＆v);
+           p=(mat*)malloc(sizeof(mat));
+           p-＞row=r;
+       p-＞col=c;
+       p-＞uval.val=v;
+       q=h[r];
+       while(q-＞right!=h[r]＆＆q-＞right-＞colc)
+           q=q-＞right;
+       p-＞right=q-＞right;
+       q-＞right=p;
+       q=h[c];
+       while(q-＞down!=h[c]＆＆q-＞down-＞rowr)
+           q=q-＞down;
+       p-＞down=q-＞down;
+       q-＞down=p;
+     }
+     return(h[0]);
+   }
+   void prmat(mat*hm)  /*输出十字链表表示的矩阵*/
+   {  mat*p,*q;
+       printf("\noutput result is:\n");
+       printf("row=%d col=%d\n:",hm-＞row,hm-＞col);
+       p=hm-＞uval.next;
+       while(p!=hm)
+       {  q=p-＞right;
+           while(p!=q)
+           (printf  ("\t%d,%d,%d:\n",q-＞row,q-＞col,q-＞uval.val);
+               q=q-＞right;
+           }
+           p=p-＞uval.next;
+       }
+   }
+   mat*colpred(int i,int j,mat*h[])  /*找非零元素在十字链表中的前驱结点*/
+   {  mat*d;
+       d=h[j];
+       while(d-＞down-＞col!=0＆＆d-＞down-＞rowi)
+           d=d-＞down;
+       return(d);
+   }
+   mat*addmat(mat*ha,mat*hb,mat*h[])  /*十字链表表示的矩阵相加*/
+   {  mat*p,*q,*ca,*cb,*pa,*pb,*qa;
+       if(ha-＞row!=hb-＞row|| ha-＞col!=hb-＞col)
+       (printf("ERROR!\n");
+           exit(0);
+       }
+       else
+   {  ca=ha-＞uval.next;
+     cb=hb-＞uval.next;
+      do
+      { pa=ca-＞right;
+       pb=cb-＞right;
+       qa=ca;
+       while(pb-＞col!=0)
+           if(pa-＞colpb-＞col＆＆pa-＞col!=0)
+           {  qa=pa;
+               pa=pa-＞right;
+           }
+           else
+               if(pa-＞col＞pb-＞col||pa-＞col==0)
+               {  p=(mat*)malloc(sizeof(mat));
+                   *p=*pb;
+                   p-＞right=pa;
+                   qa-＞right=p;
+                   qa=p;
+                   q=colpred(p-＞row,p-＞col,h);
+                   p-＞down=q-＞down;
+                   q-＞down=p;
+                   pb=pb-＞right;
+               }
+               else
+               {pa-＞uval.val+=pb-＞uval.val;
+                   if(pa-＞uval.val==0)
+                       { qa-＞right=pa-＞right;
+                           q=colpred(pa-＞row,pa-＞col,h);
+                           q-＞down=pa-＞down;
+                           free(pa);
+                       }
+                       else qa=pa;
+                       pa=pa-＞right;
+                       pb=pb-＞right;
+                   }
+               ca=ca-＞uval.next;
+               cb=cb-＞uval.next;
+           }while(ca-＞row==0);
+       }
+       return(h[0]);
+   }
+   void main()/*主程序*/
+   {  mat*hm,*hm1,*hm2;
+       mat*h[MAX]，*h1[MAX];
+       clrscr(    );
+       printf("creat 1:\n");
+       hm1=createmat(h);/*创建第一个十字链表表示的矩阵*/
+       printf("creat 2:\n");
+       hm2=createmat(h1);/*创建第二个十字链表表示的矩阵*/
+       hm=addraat(hm1,hm2,h);
+       prmat(hm);/*两个矩阵相加*/
+       getch();
+   }
